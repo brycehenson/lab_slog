@@ -3,7 +3,8 @@ Defining a standard for logging data to a json structure.
 ## design philosophy
 - human and machine readable
 - lagnuage agnostic
-- robust to various use cases
+- verbose over compressed
+- widely usable, from a single computer to 1000's
 
 ## Design Questions
 - what should the file extension be? example_log_20190402T141013.txt or .json .slogs or something else
