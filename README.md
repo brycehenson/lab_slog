@@ -1,4 +1,4 @@
-#SLOGS_structured_logging_standard
+# SLOGS (structured logging standard)
 Defining a standard for logging data to a json structure that is usefull in an for a bunch of different uses.
 
 
