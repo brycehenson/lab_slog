@@ -52,3 +52,7 @@ here i show a line that is  (structured)[http://jsonviewer.stack.hu/] for human 
 
 ## Resources
 - [structured logging](https://stackify.com/what-is-structured-logging-and-why-developers-need-it/)
+- [some other libraries to look at](https://www.kartar.net/2015/12/structured-logging/)
+- [logrus](https://github.com/Sirupsen/logrus)
+- [msql logs](https://mysqlserverteam.com/audit-logs-json-format-logging/)
+- [ngix logs] (https://github.com/elastic/examples/tree/master/Common%20Data%20Formats/nginx_json_logs)
