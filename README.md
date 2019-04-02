@@ -1,5 +1,5 @@
-# RLS-Robust-Logging-Standard-
-Defining a standard for logging data to a json structure that is usefull in an experimental environment 
+#SLOGS_structured_logging_standard
+Defining a standard for logging data to a json structure that is usefull in an for a bunch of different uses.
 
 
 
