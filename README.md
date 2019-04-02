@@ -8,7 +8,7 @@ Defining a standard for logging data to a json structure.
 ## Design Questions
 - what should the file extension be? example_log_20190402T141013.txt or .json .slogs or something else
 - for multi machine logging how to aviod name collisions of logs.
-- am i missing important feilds
+- am i missing important fields
 
 ## example log
 example_log_20190402T141013.txt
