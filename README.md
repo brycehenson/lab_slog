@@ -6,8 +6,10 @@ Defining a standard for logging data to a json structure.
 - verbose over compressed
 - widely usable, from a single computer to 1000's
 
+## Design notes
+- file extension .slog
+
 ## Design Questions
-- what should the file extension be? example_log_20190402T141013.txt or .json .slogs or something else
 - for multi machine logging how to aviod name collisions of logs.
 - am i missing important fields
 
