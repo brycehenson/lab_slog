@@ -6,7 +6,7 @@ addpath(genpath(folder));
 %%
 log_dir='.';
 log_file_str=fullfile(log_dir,...
-    sprintf('example_log_%s.txt',datestr(datetime('now'),'yyyymmddTHHMMSS')));
+    sprintf('example_log_%s.slog',datestr(datetime('now'),'yyyymmddTHHMMSS')));
 flog=fopen(log_file_str,'A'); %or a for auto flushing
 nowdt=datetime('now','TimeZone','local','Format', 'yyyy-MM-dd HH:mm:ss.SSSxxxxx');
 log=[];
