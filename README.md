@@ -1,22 +1,25 @@
 # SLOGS (structured logging standard)
-Defining a standard for logging data to a json structure.
+**[Bryce M. Henson](https://github.com/brycehenson)**
+Defining a standard for logging data to a json structure and providing a matlab and python interface.
 ## design philosophy
 - human and machine readable
 - language agnostic
-- robust to various use cases
+- verbose
+- widely usable, from a single computer to 1000's
+
 
 
 
 ## example log
 example_log_20190402T141013.txt
-here i show a line that is  (structured)[http://jsonviewer.stack.hu/] for human reading. % denotes comments
-```json
+here i show a line that is  (structured)[http://jsonviewer.stack.hu/] for human reading. // denotes comments
+```json5
 {
-  "time_iso": "2019-04-02T14:10:13.110+11:00", %mandatory with local time zone
-  "time_posix": 1.55417461311E+9,%mandatory UTC time
-  "level": "log", %mandatory, 'log','error','data','analysis' 
-  "environment": { %optional for all but first entry of each log file
-    "tier": "development", %'development','testing,'model','production'
+  "time_iso": "2019-04-02T14:10:13.110+11:00", // mandatory with local time zone, YYYY-MM-DDThh:mm:ss.sss±hh:mm
+  "time_posix": 1.55417461311E+9,//mandatory UTC time
+  "level": "log", //mandatory, 'log','ERROR','data','analysis' 
+  "environment": { //optional for all but first line of each log file
+    "tier": "development", //'development','testing,'model','production'
     "architecture": "win64",
     "computer_name": "brycelap",
     "network_interfaces": [
@@ -36,8 +39,8 @@ here i show a line that is  (structured)[http://jsonviewer.stack.hu/] for human 
       }
     ]
   },
-  "operation": "demonstrating how to use SLOGS", %mandatory
-  "parameters": { %optional, specify state/data parameters here
+  "operation": "demonstrating how to use SLOGS", //mandatory string
+  "parameters": { //optional, specify state/data parameters here
     "photodiode_power": 0.46658893504181043,
     "drive_voltage": 1.1508870929981723,
     "feedback_error": -0.53341106495818957,
@@ -80,3 +83,7 @@ here i show a line that is  (structured)[http://jsonviewer.stack.hu/] for human 
 
 ## Resources
 - [structured logging](https://stackify.com/what-is-structured-logging-and-why-developers-need-it/)
+- [some other libraries to look at](https://www.kartar.net/2015/12/structured-logging/)
+- [logrus](https://github.com/Sirupsen/logrus)
+- [msql logs](https://mysqlserverteam.com/audit-logs-json-format-logging/)
+- [ngix logs] (https://github.com/elastic/examples/tree/master/Common%20Data%20Formats/nginx_json_logs)

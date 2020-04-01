@@ -1,5 +1,4 @@
 
-
 folder = fileparts(which(mfilename));
 addpath(genpath(folder));
 % note this is not the best as it adds a bunch of .git folders to the path, for larger projects use
