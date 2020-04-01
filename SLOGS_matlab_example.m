@@ -4,9 +4,9 @@ addpath(genpath(folder));
 
 
 %%
-log_dir='.';
+log_dir='./test/';
 log_file_str=fullfile(log_dir,...
-    sprintf('example_log_%s.txt',datestr(datetime('now'),'yyyymmddTHHMMSS')));
+    sprintf('example_log_%s.slog',datestr(datetime('now'),'yyyymmddTHHMMSS')));
 flog=fopen(log_file_str,'A'); %or a for auto flushing
 nowdt=datetime('now','TimeZone','local','Format', 'yyyy-MM-dd HH:mm:ss.SSSxxxxx');
 log=[];
@@ -20,15 +20,26 @@ log.environment.architecture=computer('arch');
 log.environment.computer_name=getComputerName();
 %log.environment.macs=MACAddress(1);
 [~,log.environment.network_interfaces]=MACAddress(1);
+log.operation='start log';
+log_str=sprintf('%s\n',jsonencode(log)); %so that can print to standard out
+fprintf(flog,log_str);
 
-log.operation='demonstrating how to use SLOGS';
+time_log_write=tic;
+nowdt=datetime('now','TimeZone','local','Format', 'yyyy-MM-dd HH:mm:ss.SSSxxxxx');
+log=[];
+log.time_iso=strrep(char(nowdt),' ','T');
+log.time_posix=posixtime(nowdt);
+%log level, can be 'log','ERROR','data','analysis'
+log.level='log';
+
+log.operation='save some parameters';
 log.parameters.photodiode_power=rand(1);
 log.parameters.drive_voltage=log.parameters.photodiode_power^2+rand(1);
 log.parameters.feedback_error=log.parameters.photodiode_power-1;
 log.parameters.feedback_loop_time=rand(1)/10;
-
 log_str=sprintf('%s\n',jsonencode(log)); %so that can print to standard out
 fprintf(flog,log_str);
+toc(time_log_write)
 
 fclose(flog);
 

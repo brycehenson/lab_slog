@@ -1,0 +1,3 @@
+[submodule "lib/matlab_struct_tensor_conversions"]
+	path = lib/matlab_struct_tensor_conversions
+	url = https://github.com/brycehenson/matlab_struct_tensor_conversions.git
