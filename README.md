@@ -1,6 +1,13 @@
 # SLOGS (structured logging standard)
 **[Bryce M. Henson](https://github.com/brycehenson)**
 Defining a standard for logging data to a json structure and providing a matlab and python interface.
+
+## Name change
+- The name SLOG already exists I should come up with another.
+  - .ESLOG
+  - . 
+
+
 ## design philosophy
 - human and machine readable
 - language agnostic
@@ -48,6 +55,7 @@ here i show a line that is  (structured)[http://jsonviewer.stack.hu/] for human 
   }
 }
 ```	
+
 ## Design Notes & Questions
 - want to be suitable for 100Hz logging
 - [x] what should the extension be 
@@ -82,7 +90,10 @@ here i show a line that is  (structured)[http://jsonviewer.stack.hu/] for human 
   
 
 ## Resources
+
 - [structured logging](https://stackify.com/what-is-structured-logging-and-why-developers-need-it/)
+- [SLOG Go class](https://github.com/cdr/slog)
+- [SLOG Rust Class](https://github.com/slog-rs/slog)
 - [some other libraries to look at](https://www.kartar.net/2015/12/structured-logging/)
 - [logrus](https://github.com/Sirupsen/logrus)
 - [msql logs](https://mysqlserverteam.com/audit-logs-json-format-logging/)
