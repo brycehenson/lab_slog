@@ -1,4 +1,4 @@
-classdef slog_write_class < handle & matlab.mixin.Copyable % inherit from handle class, and make it copyable
+classdef lab_slog_write < handle & matlab.mixin.Copyable % inherit from handle class, and make it copyable
     % the level propety is a little complicated becasue matalb does not allow a seperate private set method
     % which I want so that the 
     properties
@@ -72,12 +72,14 @@ classdef slog_write_class < handle & matlab.mixin.Copyable % inherit from handle
             %time_str_tmp=strrep(time_str_tmp,' ','T');
             time_str_tmp=strrep(time_str_tmp,':','');
             time_str_tmp=strrep(time_str_tmp,'-','');
-            obj.log_file.time_str_start=time_str_tmp;
-            obj.log_file.time_str_end='inf';
+            obj.log_file.time.start.str=time_str_tmp;
+            obj.log_file.time.start.posix=posixtime(nowdt);
+
+            obj.log_file.time.end.str='inf';
             obj.log_file.comp_name=obj.log_environment.computer_name;
             obj.log_file.fname_str=sprintf('%s__%s__%s_to_%s.slog',...
                 obj.log_file.log_name,obj.log_file.comp_name,...
-                obj.log_file.time_str_start,obj.log_file.time_str_end);
+                obj.log_file.time.start.str,obj.log_file.time.end.str);
             if count(obj.log_file.fname_str,'__')>2
                 error('file name has more than 2 double unnderscores, this will prevent reading')
             end
@@ -108,20 +110,22 @@ classdef slog_write_class < handle & matlab.mixin.Copyable % inherit from handle
                     obj.git_dir='.';
             end
             if ~isempty(obj.git_dir)
-                obj.log_environment.git_info=getGitInfo(obj.git_dir);
+                obj.log_environment.code_git=getGitInfo(obj.git_dir);
             end
             if ~isempty(obj.code_version)
                 obj.log_environment.code_version=obj.code_version;
             end
+            lab_slog_dir=mfilename('fullpath');
+            [lab_slog_dir,~,~]=fileparts(lab_slog_dir);
+            obj.log_environment.lab_slog_git=getGitInfo(lab_slog_dir);
             [~,obj.log_environment.network_interfaces]=MACAddress(1);
             obj.log_environment.current_folder=pwd;
         end
         
         function get_time(obj)
             nowdt=datetime('now','TimeZone','local','Format', 'yyyy-MM-dd''T''HH:mm:ss.SSSxxxxx');
-            %obj.log_time_iso=strrep(char(nowdt),' ','T');
+            obj.log_time_iso=strrep(char(nowdt),' ','T');
             obj.log_time_posix=posixtime(nowdt);
-            
         end
         
         function write_log(obj)
@@ -129,6 +133,11 @@ classdef slog_write_class < handle & matlab.mixin.Copyable % inherit from handle
         end
         
         function close_log(obj)
+            % if there are fields written to then write them out before close
+            if ~isempty(obj.operation) || ~isempty(obj.parameters)
+                obj.write_log;
+            end
+
             
             % write an entry closing the log
             obj.operation='end log';
@@ -146,15 +155,22 @@ classdef slog_write_class < handle & matlab.mixin.Copyable % inherit from handle
             %time_str_tmp=strrep(time_str_tmp,' ','T');
             time_str_tmp=strrep(time_str_tmp,':','');
             time_str_tmp=strrep(time_str_tmp,'-','');
-            obj.log_file.time_str_end=time_str_tmp;
+            obj.log_file.time.end.str=time_str_tmp;
+            obj.log_file.time.end.posix=posixtime(nowdt);
             
             log_file_old=obj.log_file.path_str;
             obj.log_file.fname_str=sprintf('%s__%s__%s_to_%s.slog',...
                 obj.log_file.log_name,obj.log_file.comp_name,...
-                obj.log_file.time_str_start,obj.log_file.time_str_end);
+                obj.log_file.time.start.str,obj.log_file.time.end.str);
             log_file_new=fullfile(obj.log_file.log_dir, obj.log_file.fname_str);
             
+            pause(0.001)
+            %if the log has not been open for a second wait for the os to catch up
+            if obj.log_file.time.end.posix<obj.log_file.time.start.posix+1
+                pause(1)
+            end
             movefile(log_file_old,log_file_new)
+            
             
             obj.log_open=false;
             obj.slog_num_entries=0;
@@ -268,7 +284,10 @@ classdef slog_write_class < handle & matlab.mixin.Copyable % inherit from handle
                 if ~isempty(obj.parameters)
                     obj.log_entry.parameters=obj.parameters;
                 end
-                log_str=sprintf('%s\n',jsonencode(obj.log_entry)); %so that can print to standard out
+                log_str=jsonencode(obj.log_entry);
+                % cant use spritnf here because it gets rid of escape chars
+                log_str=cat(2,log_str,newline);
+                log_str=stresc(log_str); % use escape char eg \\ → \\\
                 fprintf(obj.slog_fid,log_str);
                 %increment the entry counter;
                 obj.slog_num_entries=obj.slog_num_entries+1;

@@ -1,4 +1,4 @@
-classdef slog_class < handle
+classdef lab_slog < handle
     
     properties
         %define default parameters
