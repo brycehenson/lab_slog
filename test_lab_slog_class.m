@@ -5,6 +5,8 @@ addpath(genpath(folder));
 % set_up_project_path in core_bec
 
 %%
+mkdir('test')
+
 fclose('all');
 %%test slog class
 time_open=tic;
