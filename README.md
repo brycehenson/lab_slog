@@ -1,11 +1,6 @@
-# SLOGS (structured logging standard)
+# Lab Slog = laboratory structured log standard 
 **[Bryce M. Henson](https://github.com/brycehenson)**
-Defining a standard for logging data to a json structure and providing a matlab and python interface.
-
-## Name change
-- The name SLOG already exists I should come up with another.
-  - .ESLOG
-  - . 
+Defining a standard for logging data and situations you may encounter in(or outside) a labratory to a json structure. Provides a matlab and python interface for reading writing. Make the lab less of a slog
 
 
 ## design philosophy
@@ -59,7 +54,7 @@ here i show a line that is  (structured)[http://jsonviewer.stack.hu/] for human 
 ## Design Notes & Questions
 - want to be suitable for 100Hz logging
 - [x] what should the extension be 
-  - decided on .slog
+  - decided on .labslog
 - [ ] for multi machine logging how to aviod name collisions of logs.
   - what about just computer name
     - its a pretty shit network that has duplicate computer names
