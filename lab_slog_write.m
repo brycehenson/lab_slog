@@ -118,6 +118,7 @@ classdef lab_slog_write < handle & matlab.mixin.Copyable % inherit from handle c
             lab_slog_dir=mfilename('fullpath');
             [lab_slog_dir,~,~]=fileparts(lab_slog_dir);
             obj.log_environment.lab_slog_git=getGitInfo(lab_slog_dir);
+            % get network interfaces
             [~,obj.log_environment.network_interfaces]=MACAddress(1);
             obj.log_environment.current_folder=pwd;
         end
