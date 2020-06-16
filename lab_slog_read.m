@@ -22,12 +22,16 @@ classdef lab_slog_read < handle & matlab.mixin.Copyable % inherit from handle cl
         end
         
         function value=get.log_files(obj)
-            dir_search=dir(fullfile(obj.dir,'*.slog'));
-            dir_search_struct=struct_tensor_to_struct_of_tensor(dir_search);
+            dir_search=dir(fullfile(obj.dir,'*.labslog'));
+            dir_search_struct=struct_tensor_to_struct_of_tensor(dir_search,0);
+            dir_search_struct.bytes=cell2mat(dir_search_struct.bytes);
+            dir_search_struct.isdir=cell2mat(dir_search_struct.isdir);
             is_dir_mask=~dir_search_struct.isdir;
             dir_search_struct=structfun(@(x) x(is_dir_mask),dir_search_struct,'UniformOutput',false);
             info_struct=cellfun(@name_to_info_struct,dir_search_struct.name,'UniformOutput',0);
-            info_struct=cell_tensor_of_struct_to_struct_of_tensor(info_struct);
+            info_struct=cell_tensor_of_struct_to_struct_of_tensor(info_struct,0);
+            info_struct.valid=cell2mat(info_struct.valid);
+            
             info_struct.bytes=dir_search_struct.bytes;
             info_struct.folder=dir_search_struct.folder;
             if any(~info_struct.valid)
@@ -82,14 +86,14 @@ struct_out=[];
 struct_out.valid=true;
 struct_out.raw_name=fname_in;
 
-expected_extension='.slog';
+expected_extension='.labslog';
 [filepath,fname_proc,struct_out.extension]=fileparts(fname_in);
 if ~isempty(filepath)
     error('file path should be empty')
 end
 
 if ~strcmp(struct_out.extension,expected_extension)
-    error('estension is not %s as expected',extension)
+    error('estension is not %s as expected',struct_out.extension)
     struct_out.valid=false;
 end
 fname_split=split(fname_proc,'__');

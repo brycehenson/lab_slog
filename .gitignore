@@ -4,3 +4,5 @@
 *.asv
 *.slog
 *nogit
+/scratch
+/tmp
