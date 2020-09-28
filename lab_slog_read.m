@@ -47,6 +47,10 @@ classdef lab_slog_read < handle & matlab.mixin.Copyable % inherit from handle cl
         function formated_lines=read_single_log(obj,selection)
             % todo
             % add .slog to end if not there
+            if isempty(obj.log_files_cache)
+                obj.log_files;
+            end
+            
             if isnumeric(selection)
                 if selection>numel(obj.log_files_cache.raw_name) 
                     error('out of allowed index')

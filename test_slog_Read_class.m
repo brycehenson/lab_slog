@@ -8,3 +8,9 @@ addpath(genpath(folder));
 
 %%
 
+rs=lab_slog_read;
+rs.dir='./test';
+%%
+% read in a single file
+b=rs.read_single_log(1)
+
