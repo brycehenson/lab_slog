@@ -5,7 +5,6 @@ classdef lab_slog_write < handle & matlab.mixin.Copyable % inherit from handle c
         %interfacing vars
         level='log'; %this can change
         teir='development'; %dont want this to change when log is open
-        log_name=[];
         log_dir='.'
         git_dir=[]; %path to the git directory
         code_version=[];
@@ -13,16 +12,15 @@ classdef lab_slog_write < handle & matlab.mixin.Copyable % inherit from handle c
         new_log_file_entries=1e4;
         new_log_file_bytes=1*(2^20); %50*2^20;
         new_log_logical=false; %provides a way to force a new log file, this is a good idea if the controling program has some time to wait
-        
-        % set below to private after dev work done
+        % set below to private
         slog_num_entries=0;
         log_open=false;  
         log_time_iso='';
         log_time_posix=NaN; 
-
+        
     end
     properties (NonCopyable)
-
+        log_name=[];
         operation 
         parameters
         slog_fid 
@@ -192,23 +190,6 @@ classdef lab_slog_write < handle & matlab.mixin.Copyable % inherit from handle c
         
         function set.log_name(obj,value)
             value=lower(value); %lowercase because fuck caps
-            % remove spaced and warn user
-            if any(strfind( value, ' ' ))
-                value=strrep(value,' ','_');
-                warning('spaces in log name replaced with underscore(_) \nnew name\n%s\n ', value)
-            end
-            % remove special char and warn
-            regex_cmd='[<>:"/?*\|\\]{1}';
-            if any(regexp(value,regex_cmd))
-                value=regexprep(value,regex_cmd,'');
-                warning('warning invalid charater in log name has been removed \nnew name\n%s\n ', value)
-            end
-            % remove double underscore
-            if any(strfind( value, '__' ))
-                value=strrep(value,'__','_');
-                warning('double underscore in log name removed \nnew name\n%s\n', value)
-            end
-            
             if obj.log_open && ~isequal(obj.log_name,value)
                 error('cannot change teir while log is open')
             else

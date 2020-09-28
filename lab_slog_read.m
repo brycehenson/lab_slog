@@ -4,7 +4,6 @@ classdef lab_slog_read < handle & matlab.mixin.Copyable % inherit from handle cl
         %interfacing vars
         dir='.'
         assume_done_time=1e2; % in seconds
-        verbose=3;
     end
     % read only vars
     properties (SetAccess  = protected)
@@ -43,19 +42,14 @@ classdef lab_slog_read < handle & matlab.mixin.Copyable % inherit from handle cl
             %dir_search.Names
             value=info_struct;
             obj.log_files_cache=info_struct;
+            
         end
-        
-        function value=get.log_files_cache(obj)
-            if isempty(obj.log_files_cache)
-                obj.log_files;
-            end
-            value=obj.log_files_cache;
-        end
-        
-        
         function formated_lines=read_single_log(obj,selection)
             % todo
             % add .slog to end if not there
+            if isempty(obj.log_files_cache)
+                obj.log_files;
+            end
             
             if isnumeric(selection)
                 if selection>numel(obj.log_files_cache.raw_name) 
@@ -72,34 +66,15 @@ classdef lab_slog_read < handle & matlab.mixin.Copyable % inherit from handle cl
             fclose(fid);
             num_lines=size(raw_lines{1},1);
             formated_lines=cell(num_lines,1);
-            if obj.verbose>1
-                output_chars=fprintf('line %u of %u',0,num_lines);
-            end
+            fprintf('line %04u:%04u')
             for ii=1:num_lines
-                if obj.verbose>1 && mod(ii,100)==0
-                    fprintf(repmat('\b',[1,output_chars]));
-                    output_chars=fprintf('reading in log line  %4u of %4u',ii,num_lines);
-                end
+                fprintf('\b\b\b\b%04u')
                 raw_line_single=raw_lines{1}{ii};
                 formated_lines{ii}=jsondecode(raw_line_single);
             end
             fprintf('\n')
         end
-        
-        function cell_of_logs=read_all_logs(obj)
-            num_valid_files=sum(obj.log_files_cache.valid);
-            valid_indicies=find(obj.log_files_cache.valid);
-            cell_of_logs=cell(num_valid_files,1);
-            for ii=1:num_valid_files
-                if obj.verbose>1
-                    fprintf('reading in log file %4u of %4u \n',ii,num_valid_files);
-                end
-                cell_of_logs{ii}=obj.read_single_log(valid_indicies(ii));
-            end    
-            if obj.verbose>1
-                fprintf('\ndone\n')
-            end
-        end
+       
         
     end %methods
     methods (Access  = protected)
