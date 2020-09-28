@@ -61,7 +61,7 @@ classdef lab_slog_read < handle & matlab.mixin.Copyable % inherit from handle cl
                 if selection>numel(obj.log_files_cache.raw_name) 
                     error('out of allowed index')
                 end
-                selection=obj.log_files_cache.raw_name{1};
+                selection=obj.log_files_cache.raw_name{selection};
             elseif ~( isstring(selection) || ischar(selection))
                 error('selection not recognised')
             end
