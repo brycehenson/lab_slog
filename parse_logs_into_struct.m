@@ -15,7 +15,7 @@ for ii=1:num_logs
     if ~isvarname(this_comp_name)
         this_comp_name=make_valid_var_name(this_comp_name);
         if ~any(strcmp(this_comp_name,sout_layer1_feilds))
-            warning('computer name was not a valid struct feild name it has been changed to \n%s\n',this_comp_name)
+            warning('computer name was not a valid struct field name it has been changed to \n%s\n',this_comp_name)
         end
     end
     if ~any(strcmp(this_comp_name,sout_layer1_feilds))
